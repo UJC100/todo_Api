@@ -47,13 +47,16 @@ export class UserAuthService {
     async signIn(user: any) {
         const { email, password } = user
         
-        const verifyUser = await this.userRepo.findOne({ where: { email } })
+        const verifyUser = await this.userRepo.findOne({ where: { email: email } })
         if (!verifyUser) {
-            throw new UnauthorizedException()
+            throw new UnauthorizedException(`email`)
         }
-        const verifyPassword = await bcrypt.compare(verifyUser.password, password)
+        const verifyPassword = await bcrypt.compare(
+          password,
+          verifyUser.password,
+        );
         if (!verifyPassword) {
-            throw new UnauthorizedException()
+            throw new UnauthorizedException(`password`);
         }
 
         const payload = {
