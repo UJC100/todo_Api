@@ -1,14 +1,16 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, Request, UseGuards } from '@nestjs/common';
 import { TodoService } from './todo.service';
 import { TodoEntity } from '../entity/todo.entity';
+import { JwtAuthGuard } from 'src/user-auth/jwt-auth/jwt.auth.guard';
 
 
 @Controller('todo')
 export class TodoController {
-    constructor(private readonly todoService: TodoService) { }
-    
-    @Post()
-    async create(@Body() payload: TodoEntity) {
-        return await this.todoService.createTodo(payload)
-    }
+  constructor(private readonly todoService: TodoService) {}
+
+  @Post()
+  @UseGuards(JwtAuthGuard)
+  async create(@Body() payload: TodoEntity, @Request() req) {
+    return await this.todoService.createTodo(req.user);
+  }
 }

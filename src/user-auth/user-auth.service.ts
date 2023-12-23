@@ -6,6 +6,7 @@ import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { TodoEntity } from 'src/entity/todo.entity';
 import { JwtService } from '@nestjs/jwt';
+import { PartialUserDto } from 'src/dto/user.partialDto';
 
 @Injectable()
 export class UserAuthService {
@@ -69,5 +70,10 @@ export class UserAuthService {
         return {
             token
         }
+    }
+
+    async getAll(): Promise<PartialUserDto[]> {
+        const users = await this.userRepo.find()
+        return users.map(user => new PartialUserDto(user))
     }
 }
