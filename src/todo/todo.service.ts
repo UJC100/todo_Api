@@ -18,8 +18,16 @@ export class TodoService {
   ) {}
 
   
-  async createTodo(payload: TodoDto) {
-    const create = this.todoRepo.create(payload);
+    async createTodo(userId: string, payload: TodoDto) {
+      const user = await this.userRepo.findOne({where:{_id:userId}})
+      delete user.password
+        const create = this.todoRepo.create({ ...payload, user: user });
     return await this.todoRepo.save(create);
   }
+
+    async getAll() {
+       return await this.todoRepo.find({relations: ['user']})
+  } 
+  
+  
 }

@@ -72,8 +72,24 @@ export class UserAuthService {
         }
     }
 
-    async getAll(): Promise<PartialUserDto[]> {
-        const users = await this.userRepo.find()
-        return users.map(user => new PartialUserDto(user))
+    async getAll() {
+        const users = await this.userRepo.find({relations: ['todos']})
+      return {
+        users: users
+        }
     }
+  
+  async getUser(email: string) {
+    const user = await this.userRepo.findOne({ where: { email: email } , relations:['todos']})
+    delete user.password
+    if (!user) {
+      throw new HttpException(`User not Found`, HttpStatus.NOT_FOUND)
+    }
+
+    return {
+      user: user,
+      todos: `You have ${user.todos.length} active todos left`
+    }
+  }
+    
 }

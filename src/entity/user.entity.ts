@@ -23,7 +23,7 @@ export class UserEntity extends BaseEntity {
     email: string;
     
     @Column()
-    password: string;
+    password: string; 
     
     @Column({
         type: 'enum',
