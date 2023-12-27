@@ -10,8 +10,8 @@ export class UserEntity extends BaseEntity {
     @Column()
     firstName: string;
     
-    @Column({nullable:true})
-    middleName: string;
+    @Column({unique:true})
+   userName: string;
     
     @Column()
     lastName: string;

@@ -7,9 +7,9 @@ export class UserDto {
   @IsString()
   firstName: string;
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsString()
-  middleName: string;
+   userName: string;
 
   @IsNotEmpty()
   @IsString()

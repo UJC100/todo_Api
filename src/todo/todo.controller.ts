@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards, Req, Get } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards, Req, Get, Param } from '@nestjs/common';
 import { TodoService } from './todo.service';
 import { TodoEntity } from '../entity/todo.entity';
 import { JwtAuthGuard } from 'src/user-auth/jwt-auth/jwt.auth.guard';
@@ -23,4 +23,9 @@ export class TodoController {
     async getAll() {
         return await this.todoService.getAll()
     }
+  
+  @Get(':id')
+  async getTodo(@Param('id') id:string, @User('id') userId: string) {
+    return await this.todoService.getTodo(id, userId)
+  }
 }
