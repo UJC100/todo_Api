@@ -32,8 +32,8 @@ export class UserAuthController {
       return await this.userAuthService.getAll();   
   }
 
-  @Get(':email')
-  async getUser(@Param('email') payload: string) {
+  @Get(':userName')
+  async getUser(@Param('userName') payload: string) {
     return await this.userAuthService.getUser(payload)
   }
 }

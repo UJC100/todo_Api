@@ -73,14 +73,16 @@ export class UserAuthService {
     }
 
     async getAll() {
-        const users = await this.userRepo.find({relations: ['todos']})
-      return {
-        users: users
-        }
+      const users = await this.userRepo.find({ relations: ['todos'] });
+      // for (let i = 0; i < users.length; i++) { 
+      //   delete users[i].password
+      // }
+
+      return users.map(users => users.toResponseObject())
     }
   
-  async getUser(email: string) {
-    const user = await this.userRepo.findOne({ where: { email: email } , relations:['todos']})
+  async getUser(userName: string) {
+    const user = await this.userRepo.findOne({ where: { userName: userName } , relations:['todos']})
     delete user.password
     if (!user) {
       throw new HttpException(`User not Found`, HttpStatus.NOT_FOUND)

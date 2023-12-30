@@ -33,5 +33,16 @@ export class UserEntity extends BaseEntity {
     role: Roles;
 
     @OneToMany(() => TodoEntity, (todo) => todo.user)
-    todos: TodoEntity[]
+    todos: TodoEntity[];
+
+    toResponseObject() {
+        const { password, email, role, ...rest } = this;
+        return rest
+    };
+
+    relationshipResponseObj() {
+        const { password, email, role, createdAt, updatedAt, age, ...rest } = this;
+        return rest;
+    }
 }
+
