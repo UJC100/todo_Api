@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards, Req, Get, Param, Patch } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards, Req, Get, Param, Patch, Delete } from '@nestjs/common';
 import { TodoService } from './todo.service';
 import { TodoEntity } from '../entity/todo.entity';
 import { JwtAuthGuard } from 'src/user-auth/jwt-auth/jwt.auth.guard';
@@ -38,5 +38,11 @@ export class TodoController {
     @User('id') userId: string,
   ) {
     return await this.todoService.updateTodo(id, userId, payload);
+  }
+
+  @Delete(':id')
+  @UseGuards(JwtAuthGuard)
+  async deleteTodo(@Param('id') id: string, @User('id') userId: string) {
+    return await this.todoService.eraseTodo(id, userId);
   }
 }
