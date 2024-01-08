@@ -12,28 +12,28 @@ export class UserAuthController {
     return this.userAuthService.signUp(payload);
   }
 
-  @Post('signIn')
-  async signIn(@Body() user, @Res() res) {
-    const token = await this.userAuthService.signIn(user);
+//   @Post('signIn')
+//   async signIn(@Body() user, @Res() res) {
+//     const token = await this.userAuthService.signIn(user);
 
-    res.cookie('Authenticated', token, {
-      httpOnly: true,
-      maxAge: 60 * 60 * 24,
-    });
-    return res.status(HttpStatus.OK).json({
-      success: true,
-      userToken: token,
-    });
-  }
+//     res.cookie('Authenticated', token, {
+//       httpOnly: true,
+//       maxAge: 60 * 60 * 24,
+//     });
+//     return res.status(HttpStatus.OK).json({
+//       success: true,
+//       userToken: token,
+//     });
+//   }
 
-  @Get()
-//   @UseGuards(JwtAuthGuard)
-  async getAll() {
-      return await this.userAuthService.getAll();   
-  }
+//   @Get()
+// //   @UseGuards(JwtAuthGuard)
+//   async getAll() {
+//       return await this.userAuthService.getAll();   
+//   }
 
-  @Get(':userName')
-  async getUser(@Param('userName') payload: string) {
-    return await this.userAuthService.getUser(payload)
-  }
+//   @Get(':userName')
+//   async getUser(@Param('userName') payload: string) {
+//     return await this.userAuthService.getUser(payload)
+  // }
 }

@@ -1,7 +1,8 @@
 import { Roles } from "src/enum/role";
 import { BaseEntity } from "./Base.entity";
-import { Column, Entity, OneToMany } from "typeorm";
+import { Column, Entity, JoinTable, ManyToMany, OneToMany, OneToOne } from "typeorm";
 import { TodoEntity } from "./todo.entity";
+import { ContactInfoEntity } from "./contactInfo.entity";
 
 
 
@@ -10,8 +11,8 @@ export class UserEntity extends BaseEntity {
     @Column()
     firstName: string;
     
-    @Column({unique:true})
-   userName: string;
+    @Column({ unique: true })
+    userName: string;
     
     @Column()
     lastName: string;
@@ -19,11 +20,8 @@ export class UserEntity extends BaseEntity {
     @Column()
     age: number;
     
-    @Column({unique:true})
-    email: string;
-    
     @Column()
-    password: string; 
+    password: string;
     
     @Column({
         type: 'enum',
@@ -35,13 +33,20 @@ export class UserEntity extends BaseEntity {
     @OneToMany(() => TodoEntity, (todo) => todo.user)
     todos: TodoEntity[];
 
+    @OneToOne(() => ContactInfoEntity, contactInfo => contactInfo.user)
+    userEmail: ContactInfoEntity;
+
+    @ManyToMany(() => TodoEntity, {cascade: true})
+    @JoinTable()
+    bookmarks: TodoEntity[];
+
     toResponseObject() {
-        const { password, email, role, ...rest } = this;
+        const { password, role, ...rest } = this;
         return rest
     };
 
     relationshipResponseObj() {
-        const { password, email, role, createdAt, updatedAt, age, ...rest } = this;
+        const { password, role, createdAt, updatedAt, age, ...rest } = this;
         return rest;
     }
 }

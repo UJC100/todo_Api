@@ -25,6 +25,6 @@ export class PartialUserDto extends BaseEntity {
         this.middleName = user.userName;
         this.lastName = user.lastName;
         this.age = user.age;
-        this.email = user.email;
+        // this.email = user.email;
     }
 }

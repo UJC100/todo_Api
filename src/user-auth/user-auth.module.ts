@@ -8,6 +8,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { PassportModule } from '@nestjs/passport';
 import { JwtSrategy } from './jwt-auth/jwt.strategy';
+import { ContactInfoEntity } from 'src/entity/contactInfo.entity';
 
 @Module({
   imports: [JwtModule.registerAsync({
@@ -21,7 +22,7 @@ import { JwtSrategy } from './jwt-auth/jwt.strategy';
     }),
     inject:[ConfigService]
   }),
-    TypeOrmModule.forFeature([UserEntity, TodoEntity]),
+    TypeOrmModule.forFeature([UserEntity, TodoEntity, ContactInfoEntity]),
     PassportModule
   ],
   controllers: [UserAuthController],
