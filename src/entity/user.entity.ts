@@ -1,6 +1,6 @@
+import { Column, Entity, JoinTable, ManyToMany, OneToMany, OneToOne } from "typeorm";
 import { Roles } from "src/enum/role";
 import { BaseEntity } from "./Base.entity";
-import { Column, Entity, JoinTable, ManyToMany, OneToMany, OneToOne } from "typeorm";
 import { TodoEntity } from "./todo.entity";
 import { ContactInfoEntity } from "./contactInfo.entity";
 
@@ -11,7 +11,7 @@ export class UserEntity extends BaseEntity {
     @Column()
     firstName: string;
     
-    @Column({ unique: true })
+    @Column()
     userName: string;
     
     @Column()

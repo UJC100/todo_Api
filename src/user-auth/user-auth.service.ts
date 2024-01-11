@@ -19,65 +19,67 @@ export class UserAuthService {
     
 
     async signUp(payload: UserDto) {
-        const { password, email, ...rest } = payload
-        try {
-             const checkUser = await this.contactInfoRepo.findOne({
-               where: {  email },
-             });
-             if (checkUser) {
-               throw new HttpException(
-                 `user with email already exist`,
-                 HttpStatus.BAD_REQUEST,
-               );
-             }
-             const saltOrRounds = 10;
-             const hashPassword = await bcrypt.hash(password, saltOrRounds);
+      const { password, userName, email, ...rest } = payload;
 
-              await this.contactInfoRepo.save({
-               email
-             })
-             const saveUser = await this.userRepo.save({
-               password: hashPassword,
-               ...rest,
-             });
-             delete saveUser.password;
+      const checkUser = await this.contactInfoRepo.findOne({ where: { email } })
+      
+      try {
+       if (checkUser) {
+         throw new HttpException(
+           `user with email already exist`,
+           HttpStatus.BAD_REQUEST,
+         );
+       }
+      const saltOrRounds = 10;
+      const hashPassword = await bcrypt.hash(password, saltOrRounds);
 
-          return {
-            ...saveUser,
-            userEmail: saveUser.userEmail.email
-          };
-        } catch {
-            throw new HttpException(`Something went wrong`, HttpStatus.INTERNAL_SERVER_ERROR)
-        }
-       
+      const userContact = this.contactInfoRepo.create({ email })
+      await this.contactInfoRepo.save(userContact)
+      
+
+      const saveUser = this.userRepo.create({
+        password: hashPassword,
+        userName: userName,
+        ...rest,
+      });
+      saveUser.userEmail = userContact
+      await this.userRepo.save(saveUser)
+      delete saveUser.password;
+      return {
+        ...saveUser,
+        userEmail: saveUser.userEmail.email
+      } 
+      } catch (err) {
+        throw err
+      }
     }
 
-  //   async signIn(user: any) {
-  //       const { email, password } = user
+    async signIn(user: any) {
+        const { email, password } = user
         
-  //       const verifyUser = await this.userRepo.findOne({ where: { email: email } })
-  //       if (!verifyUser) {
-  //           throw new UnauthorizedException(`email`)
-  //       }
-  //       const verifyPassword = await bcrypt.compare(
-  //         password,
-  //         verifyUser.password,
-  //       );
-  //       if (!verifyPassword) {
-  //           throw new UnauthorizedException(`password`);
-  //       }
+        const verifyEmail = await this.contactInfoRepo.findOne({ where: { email: email } })
+        if (!verifyEmail) {
+            throw new UnauthorizedException(`email`)
+        }
+        const verifyPassword = await bcrypt.compare(
+          password,
+          verifyEmail.user.password,
+        );
+        if (!verifyPassword) {
+            throw new UnauthorizedException(`password`);
+        }
 
-  //       const payload = {
-  //           sub: verifyUser._id,
-  //           email: verifyUser.email
-  //       }
+        const payload = {
+            sub: verifyEmail.user._id,
+            email: verifyEmail.email
+        }
 
-  //       const token = await this.jwtService.signAsync(payload)
+        const token = await this.jwtService.signAsync(payload)
 
-  //       return {
-  //           token
-  //       }
-  //   }
+        return {
+            token
+        }
+    }
 
   //   async getAll() {
   //     const users = await this.userRepo.find({ relations: ['todos'] });

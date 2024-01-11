@@ -5,10 +5,10 @@ import { UserEntity } from "./user.entity";
 
 @Entity()
 export class ContactInfoEntity extends BaseEntity{
-    @Column({unique:true})
+    @Column()
     email: string
 
-    @OneToOne(() => UserEntity, user => user.userEmail, {onDelete: 'CASCADE'})
+    @OneToOne(() => UserEntity, user => user.userEmail, {cascade:true})
     @JoinColumn()
     user: UserEntity;
 }

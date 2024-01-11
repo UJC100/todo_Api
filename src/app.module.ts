@@ -3,6 +3,7 @@ import { DatabaseModule } from './database/database.module';
 import { ConfigModule } from '@nestjs/config';
 import { UserAuthModule } from './user-auth/user-auth.module';
 import { TodoModule } from './todo/todo.module';
+import { ContactInfoModule } from './contact-info/contact-info.module';
 
 
 @Module({
@@ -12,7 +13,8 @@ import { TodoModule } from './todo/todo.module';
     }),
     DatabaseModule,
     UserAuthModule,
-    TodoModule],
+    TodoModule,
+    ContactInfoModule],
   controllers: [],
   providers: [],
 })
