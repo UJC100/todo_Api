@@ -40,9 +40,10 @@ export class UserAuthService {
       const saveUser = this.userRepo.create({
         password: hashPassword,
         userName: userName,
+        userEmail: userContact,
         ...rest,
       });
-      saveUser.userEmail = userContact
+      /* saveUser.userEmail = userContact  <===  ANOTHER WAY OF MAPPING CONTACTS TO USERS */
       await this.userRepo.save(saveUser)
       delete saveUser.password;
       return {
@@ -57,7 +58,7 @@ export class UserAuthService {
     async signIn(user: any) {
         const { email, password } = user
         
-        const verifyEmail = await this.contactInfoRepo.findOne({ where: { email: email } })
+        const verifyEmail = await this.contactInfoRepo.findOne({ where: { email: email }, relations: ['user']})
         if (!verifyEmail) {
             throw new UnauthorizedException(`email`)
         }
@@ -65,6 +66,7 @@ export class UserAuthService {
           password,
           verifyEmail.user.password,
         );
+      
         if (!verifyPassword) {
             throw new UnauthorizedException(`password`);
         }
@@ -81,26 +83,36 @@ export class UserAuthService {
         }
     }
 
-  //   async getAll() {
-  //     const users = await this.userRepo.find({ relations: ['todos'] });
-  //     // for (let i = 0; i < users.length; i++) { 
-  //     //   delete users[i].password
-  //     // }
+    async getAll() {
+      const users = await this.userRepo.find({ relations: ['todos', 'userEmail'] });
+      // for (let i = 0; i < users.length; i++) { 
+      //   delete users[i].password
+      // }
 
-  //     return users.map(users => users.toResponseObject())
-  //   }
+      const mappedUserRes = users.map((users) => {
+        return {
+          ...users.toResponseObject(),
+          userEmail: users.userEmail.email,
+          todos: users.todos.map(item => item.todo),
+          todo: `You have ${users.todos.length} active todos`,
+        };
+      })
+      return mappedUserRes
+    }
   
-  // async getUser(userName: string) {
-  //   const user = await this.userRepo.findOne({ where: { userName: userName } , relations:['todos']})
-  //   delete user.password
-  //   if (!user) {
-  //     throw new HttpException(`User not Found`, HttpStatus.NOT_FOUND)
-  //   }
+  async getUser(userName: string) {
+    const user = await this.userRepo.findOne({ where: { userName: userName } , relations:['todos', 'userEmail']})
+    delete user.password
+    if (!user) {
+      throw new HttpException(`User not Found`, HttpStatus.NOT_FOUND)
+    }
 
-  //   return {
-  //     user: user,
-  //     todos: `You have ${user.todos.length} active todos left`
-  //   }
-  // }
+    return {
+      ...user.relationshipResponseObj(),
+      userEmail: user.userEmail.email,
+      todos: user.todos.map((item) => item.todo),
+      todo: `You have ${user.todos.length} active todos`,
+    };
+  }
     
 }

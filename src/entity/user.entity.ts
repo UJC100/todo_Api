@@ -48,6 +48,7 @@ export class UserEntity extends BaseEntity {
     relationshipResponseObj() {
         const { password, role, createdAt, updatedAt, age, ...rest } = this;
         return rest;
-    }
+    };
+
 }
 

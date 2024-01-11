@@ -4,11 +4,17 @@ import { UserEntity } from "./user.entity";
 
 
 @Entity()
-export class ContactInfoEntity extends BaseEntity{
-    @Column()
-    email: string
+export class ContactInfoEntity extends BaseEntity {
+  @Column()
+  email: string;
 
-    @OneToOne(() => UserEntity, user => user.userEmail, {cascade:true})
-    @JoinColumn()
-    user: UserEntity;
+  @OneToOne(() => UserEntity, (user) => user.userEmail, { cascade: true })
+  @JoinColumn()
+  user: UserEntity;
+
+//   contactInfoResponseObj() {
+//     const { _id, createdAt, updatedAt, ...rest } = this;
+
+//     return rest;
+//   }
 }

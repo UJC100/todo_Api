@@ -26,14 +26,14 @@ export class UserAuthController {
     });
   }
 
-//   @Get()
-// //   @UseGuards(JwtAuthGuard)
-//   async getAll() {
-//       return await this.userAuthService.getAll();   
-//   }
+  @Get()
+//   @UseGuards(JwtAuthGuard)
+  async getAll() {
+      return await this.userAuthService.getAll();   
+  }
 
-//   @Get(':userName')
-//   async getUser(@Param('userName') payload: string) {
-//     return await this.userAuthService.getUser(payload)
-  // }
+  @Get(':userName')
+  async getUser(@Param('userName') payload: string) {
+    return await this.userAuthService.getUser(payload)
+  }
 }
