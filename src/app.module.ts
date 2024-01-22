@@ -3,7 +3,8 @@ import { DatabaseModule } from './database/database.module';
 import { ConfigModule } from '@nestjs/config';
 import { UserAuthModule } from './user-auth/user-auth.module';
 import { TodoModule } from './todo/todo.module';
-import { ContactInfoModule } from './contact-info/contact-info.module';
+import { CollabModule } from './collab/collab.module';
+
 
 
 @Module({
@@ -14,7 +15,8 @@ import { ContactInfoModule } from './contact-info/contact-info.module';
     DatabaseModule,
     UserAuthModule,
     TodoModule,
-    ContactInfoModule],
+    CollabModule,
+    ],
   controllers: [],
   providers: [],
 })

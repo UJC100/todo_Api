@@ -9,6 +9,7 @@ import { ConfigService } from '@nestjs/config';
 import { PassportModule } from '@nestjs/passport';
 import { JwtSrategy } from './jwt-auth/jwt.strategy';
 import { ContactInfoEntity } from 'src/entity/contactInfo.entity';
+import { CollaboratorEntity } from 'src/entity/collaborators.entity';
 
 @Module({
   imports: [JwtModule.registerAsync({
@@ -22,7 +23,7 @@ import { ContactInfoEntity } from 'src/entity/contactInfo.entity';
     }),
     inject:[ConfigService]
   }),
-    TypeOrmModule.forFeature([UserEntity, TodoEntity, ContactInfoEntity]),
+    TypeOrmModule.forFeature([UserEntity, TodoEntity, ContactInfoEntity, CollaboratorEntity]),
     PassportModule
   ],
   controllers: [UserAuthController],

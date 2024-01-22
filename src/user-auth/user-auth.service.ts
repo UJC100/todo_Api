@@ -89,7 +89,7 @@ export class UserAuthService {
 
   async getAll() {
     const users = await this.userRepo.find({
-      relations: ['todos', 'userEmail'],
+      relations: ['todos', 'userEmail', 'collaborators'],
     });
     // for (let i = 0; i < users.length; i++) {
     //   delete users[i].password
@@ -101,6 +101,7 @@ export class UserAuthService {
         userEmail: users.userEmail.email,
         todos: users.todos.map((item) => item.todo),
         todo: `You have ${users.todos.length} active todos`,
+        numberOfCollabs: `You have ${users.collaborators.length} active collaborators on your current todo`,
       };
     });
     return mappedUserRes;
@@ -109,7 +110,7 @@ export class UserAuthService {
   async getUser(userName: string) {
     const user = await this.userRepo.findOne({
       where: { userName: userName },
-      relations: ['todos', 'userEmail'],
+      relations: ['todos', 'userEmail', 'collaborators'],
     });
     delete user.password;
     if (!user) {
@@ -120,7 +121,9 @@ export class UserAuthService {
       ...user.relationshipResponseObj(),
       userEmail: user.userEmail.email,
       todos: user.todos.map((item) => item.todo),
-      todo: `You have ${user.todos.length} active todos`,
+      todo: `You have ${user.todos.length} active todos`, 
+      collaborators:user.collaborators.map((item) => item.name),
+      numberOfCollabs: `You have ${user.collaborators.length} active collaborators on your current todo`,
     };
   }
 }
