@@ -45,4 +45,16 @@ export class TodoController {
   async deleteTodo(@Param('id') id: string, @User('id') userId: string) {
     return await this.todoService.eraseTodo(id, userId);
   }
+
+  @Post(':todoId/collabs/:id')
+  @UseGuards(JwtAuthGuard)
+  async addCollaborators(@Param('todoId') todoId: string, @Param('id') id: string,) {
+    return await this.todoService.addCollaborator(todoId, id)
+  }
+
+  @Post(':todoId/removecollabs/:id')
+  @UseGuards(JwtAuthGuard)
+  async removeCollaborators(@Param('todoId') todoId: string, @Param('id') id: string,) {
+    return await this.todoService.removeCollaborator(todoId, id)
+  }
 }

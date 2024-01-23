@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { CollabService } from './collab.service';
 import { CollabDto } from 'src/dto/collab.dto';
 import { User } from 'src/todo/user.decorator';
@@ -10,7 +10,16 @@ export class CollabController {
 
   @Post()
   @UseGuards(JwtAuthGuard)
-  async createCollaborator(@Body() payload: CollabDto, @User('id') userId: string) {
-      return await this.collabService.createCollab(payload, userId)
+  async createCollaborator(
+    @Body() payload: CollabDto,
+    @User('id') userId: string,
+  ) {
+    return await this.collabService.createCollab(payload, userId);
+  }
+
+  @Get()
+  @UseGuards(JwtAuthGuard)
+  async getAllCollaborators() {
+    return await this.collabService.getCollabs();
   }
 }

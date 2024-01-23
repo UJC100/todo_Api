@@ -20,14 +20,16 @@ export class CollabService {
     
     const user = await this.userRepo.findOne({ where: { _id: userId } })
 
-    const collaborator = this.collabRepo.create({...payload, user:user})
+    const collaborator = this.collabRepo.create({...payload, user:user.toResponseObject()})
       
    return  await this.collabRepo.save(collaborator)
    
   }
   
   async getCollabs() {
-    const collaborators = await this.collabRepo.find({relations: ['user']})
+    const collaborators = await this.collabRepo.find({
+      relations: ['user', 'tasks'],
+    });
 
     const mappedCollabs = collaborators.map(collabs => {
       return {

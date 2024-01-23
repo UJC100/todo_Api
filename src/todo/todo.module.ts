@@ -6,10 +6,11 @@ import { UserEntity } from 'src/entity/user.entity';
 import { TodoEntity } from 'src/entity/todo.entity';
 import { JwtSrategy } from '../user-auth/jwt-auth/jwt.strategy';
 import { PassportModule } from '@nestjs/passport';
+import { CollaboratorEntity } from 'src/entity/collaborators.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([UserEntity, TodoEntity]),
+    TypeOrmModule.forFeature([UserEntity, TodoEntity, CollaboratorEntity]),
      PassportModule
   ],
   controllers: [TodoController],
