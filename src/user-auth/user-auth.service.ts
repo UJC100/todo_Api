@@ -158,7 +158,7 @@ export class UserAuthService {
         from: `${process.env.MAILER_USER}`,
         subject: `Reset Password link`,
         text: `click the link to reset password`,
-        html: `<h1><b>Click the link to change password</b></h1><br><a href= "${link}">reset password</a>`
+        html: `<h1><b>Click the link to change password</b></h1><br><a href= "${link}">reset your password</a>`
       })
     } catch (error) {
       throw error

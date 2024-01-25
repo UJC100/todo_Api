@@ -10,6 +10,9 @@ import { MailerModule } from '@nestjs-modules/mailer';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     MailerModule.forRoot({
       transport: {
         service: 'gmail',
@@ -18,9 +21,6 @@ import { MailerModule } from '@nestjs-modules/mailer';
           pass: process.env.APP_PASSWORD,
         },
       },
-    }),
-    ConfigModule.forRoot({
-      isGlobal: true,
     }),
     DatabaseModule,
     UserAuthModule,
