@@ -1,7 +1,9 @@
-import { Body, Controller, Get, HttpStatus, Param, Post, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Param, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { UserAuthService } from './user-auth.service';
 import { UserDto } from 'src/dto/user.dto';
 import { JwtAuthGuard } from './jwt-auth/jwt.auth.guard';
+import { ResetPasswordDto } from 'src/dto/reset-password.dto';
+import { ForgotPasswordDto } from 'src/dto/forgot-password.entity';
 
 @Controller('user')
 export class UserAuthController {
@@ -35,5 +37,17 @@ export class UserAuthController {
   @Get(':userName')
   async getUser(@Param('userName') payload: string) {
     return await this.userAuthService.getUser(payload)
+  }
+
+  @Post('forgotPassword')
+  async forgotPassword(@Body() payload: ForgotPasswordDto) {
+    return await this.userAuthService.forgotPassword(payload)
+  }
+
+  @Post('resetPassword/:userId/:token')
+  async resetPassword(@Body() payload: ResetPasswordDto, @Param('userId') userId: string, @Param('token') token: string) {
+    console.log(userId, token)
+
+    return await this.userAuthService.resetPassword(payload, userId, token)
   }
 }
