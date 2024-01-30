@@ -15,22 +15,6 @@ export class UserAuthController {
     return this.userAuthService.signUp(payload);
   }
 
-  @Get('google/login')
-  @UseGuards(GoogleAuthGuard)
-  async googleLogin() {
-    return {
-      message: 'Congrats'
-    }
-  }
-
-  @Get('google')
-  @UseGuards(GoogleAuthGuard)
-  async googleRedirect() {
-    return {
-      message: 'Congrats redirect'
-    }
-  }
-
   @Post('signIn')
   async signIn(@Body() user, @Res() res) {
     const token = await this.userAuthService.signIn(user);

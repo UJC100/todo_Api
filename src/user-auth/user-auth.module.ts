@@ -11,24 +11,31 @@ import { JwtSrategy } from './jwt-auth/jwt.strategy';
 import { ContactInfoEntity } from 'src/entity/contactInfo.entity';
 import { CollaboratorEntity } from 'src/entity/collaborators.entity';
 import { GoogleStrategy } from './googleStrategy/googleStrategy';
+import { GoogleController } from './google.controller';
 
 @Module({
-  imports: [JwtModule.registerAsync({
-    useFactory: (configService: ConfigService) => ({
-      global: true,
+  imports: [
+    JwtModule.registerAsync({
+      useFactory: (configService: ConfigService) => ({
+        global: true,
         secret: configService.getOrThrow('JWT_ENCODE'),
-      signOptions: {
-        algorithm: configService.getOrThrow('JWT_ALGORITHM'),
-        expiresIn: configService.getOrThrow('JWT_EXPIRATION'),
-      }
+        signOptions: {
+          algorithm: configService.getOrThrow('JWT_ALGORITHM'),
+          expiresIn: configService.getOrThrow('JWT_EXPIRATION'),
+        },
+      }),
+      inject: [ConfigService],
     }),
-    inject:[ConfigService]
-  }),
-    TypeOrmModule.forFeature([UserEntity, TodoEntity, ContactInfoEntity, CollaboratorEntity]),
-    PassportModule
+    TypeOrmModule.forFeature([
+      UserEntity,
+      TodoEntity,
+      ContactInfoEntity,
+      CollaboratorEntity,
+    ]),
+    PassportModule,
   ],
-  controllers: [UserAuthController],
+  controllers: [UserAuthController, GoogleController],
   providers: [UserAuthService, JwtSrategy, GoogleStrategy],
-  exports: [JwtSrategy]
+  exports: [JwtSrategy],
 })
 export class UserAuthModule {}
