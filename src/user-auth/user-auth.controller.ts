@@ -4,6 +4,7 @@ import { UserDto } from 'src/dto/user.dto';
 import { JwtAuthGuard } from './jwt-auth/jwt.auth.guard';
 import { ResetPasswordDto } from 'src/dto/reset-password.dto';
 import { ForgotPasswordDto } from 'src/dto/forgot-password.entity';
+import { GoogleAuthGuard } from './googleStrategy/google.guard';
 
 @Controller('user')
 export class UserAuthController {
@@ -12,6 +13,22 @@ export class UserAuthController {
   @Post('signUp')
   async signUp(@Body() payload: UserDto) {
     return this.userAuthService.signUp(payload);
+  }
+
+  @Get('google/login')
+  @UseGuards(GoogleAuthGuard)
+  async googleLogin() {
+    return {
+      message: 'Congrats'
+    }
+  }
+
+  @Get('google')
+  @UseGuards(GoogleAuthGuard)
+  async googleRedirect() {
+    return {
+      message: 'Congrats redirect'
+    }
   }
 
   @Post('signIn')

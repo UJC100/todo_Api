@@ -10,6 +10,7 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtSrategy } from './jwt-auth/jwt.strategy';
 import { ContactInfoEntity } from 'src/entity/contactInfo.entity';
 import { CollaboratorEntity } from 'src/entity/collaborators.entity';
+import { GoogleStrategy } from './googleStrategy/googleStrategy';
 
 @Module({
   imports: [JwtModule.registerAsync({
@@ -27,7 +28,7 @@ import { CollaboratorEntity } from 'src/entity/collaborators.entity';
     PassportModule
   ],
   controllers: [UserAuthController],
-  providers: [UserAuthService, JwtSrategy],
+  providers: [UserAuthService, JwtSrategy, GoogleStrategy],
   exports: [JwtSrategy]
 })
 export class UserAuthModule {}
