@@ -7,13 +7,15 @@ import { TodoEntity } from 'src/entity/todo.entity';
 import { JwtSrategy } from '../user-auth/jwt-auth/jwt.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { CollaboratorEntity } from 'src/entity/collaborators.entity';
+import { UserAuthService } from 'src/user-auth/user-auth.service';
 
 @Module({
   imports: [
+    
     TypeOrmModule.forFeature([UserEntity, TodoEntity, CollaboratorEntity]),
      PassportModule
   ],
   controllers: [TodoController],
-  providers: [TodoService, JwtSrategy]
+  providers: [TodoService],
 })
 export class TodoModule {}

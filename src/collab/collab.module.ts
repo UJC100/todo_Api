@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { CollaboratorEntity } from 'src/entity/collaborators.entity';
 import { TodoEntity } from 'src/entity/todo.entity';
 import { UserEntity } from 'src/entity/user.entity';
+import { JwtSrategy } from 'src/user-auth/jwt-auth/jwt.strategy';
 
 @Module({
   imports: [

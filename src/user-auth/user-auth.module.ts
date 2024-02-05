@@ -12,6 +12,8 @@ import { ContactInfoEntity } from 'src/entity/contactInfo.entity';
 import { CollaboratorEntity } from 'src/entity/collaborators.entity';
 import { GoogleStrategy } from './googleStrategy/googleStrategy';
 import { GoogleController } from './google.controller';
+import { GoogleEntity } from 'src/entity/google.userInfo';
+// import { GoogleService } from './google.service';
 
 @Module({
   imports: [
@@ -31,11 +33,12 @@ import { GoogleController } from './google.controller';
       TodoEntity,
       ContactInfoEntity,
       CollaboratorEntity,
+      GoogleEntity
     ]),
     PassportModule,
   ],
   controllers: [UserAuthController, GoogleController],
   providers: [UserAuthService, JwtSrategy, GoogleStrategy],
-  exports: [JwtSrategy],
+  exports: [JwtSrategy, UserAuthService],
 })
 export class UserAuthModule {}

@@ -17,7 +17,7 @@ import { GoogleAuthGuard } from "./googleStrategy/google.guard";
    }
 
 
-   @Get('google')
+   @Get('google/redirect')
    @UseGuards(GoogleAuthGuard)
    async googleRedirect() {
      return {

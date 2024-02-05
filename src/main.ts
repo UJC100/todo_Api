@@ -7,7 +7,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({
     whitelist:true
   }))
-  app.setGlobalPrefix('api/v1', { exclude: ['google/login', 'google'] });
+  app.setGlobalPrefix('api/v1', { exclude: ['google/login', 'google/redirect'] });
 
   const Port = process.env.PORT
   await app.listen(Port);

@@ -1,11 +1,12 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { PassportStrategy } from "@nestjs/passport";
 import { ExtractJwt, Strategy } from "passport-jwt";
+import { UserAuthService } from "../user-auth.service";
 
 
 @Injectable()
 export class JwtSrategy extends PassportStrategy(Strategy) {
-    constructor() {
+    constructor(private readonly userService: UserAuthService) {
         super({
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
             ignoreExpiration: false,
@@ -19,4 +20,12 @@ export class JwtSrategy extends PassportStrategy(Strategy) {
             email:payload.email
         }
     }
+
+    // async googleValidation(payload: any) {
+    //     const user = await this.userService.googleSignIn(payload.email)
+    //     //  if (!user) {
+    //     //    throw new UnauthorizedException();
+    //     //  }
+    //      return user;
+    // }
 }

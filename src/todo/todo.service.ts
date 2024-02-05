@@ -28,8 +28,8 @@ export class TodoService {
       return await this.todoRepo.save(create);
     } catch {
       throw new HttpException(
-        `Internal Server Error`,
-        HttpStatus.INTERNAL_SERVER_ERROR,
+        `Bad request`,
+        HttpStatus.BAD_REQUEST
       );
     }
   }

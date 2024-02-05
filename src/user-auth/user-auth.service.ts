@@ -10,6 +10,9 @@ import { ContactInfoEntity } from 'src/entity/contactInfo.entity';
 import { ForgotPasswordDto } from 'src/dto/forgot-password.entity';
 import { ResetPasswordDto } from 'src/dto/reset-password.dto';
 import { MailerService } from '@nestjs-modules/mailer';
+import { GoogleDto } from 'src/dto/google.dto';
+import { Profile } from 'passport-google-oauth20';
+import { GoogleEntity } from 'src/entity/google.userInfo';
 
 @Injectable()
 export class UserAuthService {
@@ -20,6 +23,7 @@ export class UserAuthService {
     private readonly contactInfoRepo: Repository<ContactInfoEntity>,
     @InjectRepository(ContactInfoEntity)
     private readonly todoRepo: Repository<TodoEntity>,
+    @InjectRepository(GoogleEntity) private readonly googleRepo: Repository<GoogleEntity>,
     private readonly jwtService: JwtService,
     private readonly mailerService : MailerService
   ) {}
@@ -89,6 +93,16 @@ export class UserAuthService {
     return {
       token,
     };
+  }
+
+  async googleSignIn(details: GoogleDto) {
+    const user = await this.googleRepo.findOne({where: {email: details.email}})
+    if(!user) {
+      const createUser = this.googleRepo.create(details)
+      await this.googleRepo.save(createUser)
+    }
+    console.log(user)
+    // return user
   }
 
   async getAll() {
